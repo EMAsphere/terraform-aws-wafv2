@@ -105,6 +105,22 @@ variable "ip_rate_url_based_rules" {
   default     = []
 }
 
+variable "ip_rate_header_based_rules" {
+  type = list(object({
+    name                  = string
+    priority              = number
+    limit                 = number
+    action                = string
+    response_code         = optional(number, 403)
+    aggregate_key_type    = optional(string, "IP")
+    comparison_operator   = optional(string, "GT")
+    size                  = optional(number, 5)
+    header                = optional(string, "authorization")
+  }))
+  description = "A rate and header based rule tracks the rate of requests for each originating IP address, and triggers the rule action when the rate exceeds a limit that you specify on the number of requests in any 5-minute time span. By default, limit the number of request containing the header `authorization`."
+  default     = []
+}
+
 variable "filtered_header_rule" {
   type = object({
     header_types  = list(string)
